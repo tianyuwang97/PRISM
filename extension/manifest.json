@@ -1,0 +1,71 @@
+{
+  "manifest_version": 3,
+  "name": "PRISM · 网页连接测试",
+  "version": "0.4.4",
+  "description": "连接六家 AI 官网，回填本次回答。Dola 为新增测试接入。",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://chat.deepseek.com/*",
+    "https://prism-six-tiany-1120.xiaoboss.chatgpt.site/*",
+    "https://chatgpt.com/*",
+    "https://gemini.google.com/*",
+    "https://claude.ai/*",
+    "https://grok.com/*",
+    "https://www.dola.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "PRISM 网页连接"
+  },
+  "icons": {
+    "64": "icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://prism-six-tiany-1120.xiaoboss.chatgpt.site/*"
+      ],
+      "js": [
+        "bridge.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://chat.deepseek.com/*"
+      ],
+      "js": [
+        "adapter.js",
+        "deepseek.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://chatgpt.com/*"
+      ],
+      "js": [
+        "chatgpt.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://gemini.google.com/*",
+        "https://claude.ai/*",
+        "https://grok.com/*",
+        "https://www.dola.com/*"
+      ],
+      "js": [
+        "web-providers.js",
+        "web-adapter.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

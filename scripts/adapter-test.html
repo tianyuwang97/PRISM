@@ -1,0 +1,10 @@
+<!doctype html><meta charset="utf-8"><title>PRISM DOM adapter checks</title><script src="/adapter.js"></script><h1>DOM adapter regression checks</h1><div id="fixtures"></div><pre id="result"></pre><script>
+const area=document.getElementById('fixtures'), out=document.getElementById('result');const icons='<div class="ds-icon-button" role="button"><svg></svg></div>'.repeat(6);
+const checks=[
+['icon-only finished toolbar',`<article><div><div class="ds-markdown" id="answer">Hello!</div></div><footer>${icons}</footer></article>`,true],
+['stream still in progress',`<article><div class="ds-markdown" id="answer">Hello</div></article>`,false],
+['old response footer must not finish a new response',`<section><article><div class="ds-markdown">old</div>${icons}</article><article><div class="ds-markdown" id="answer">new</div></article></section>`,false],
+['explicit stop control overrides footer',`<article><div class="ds-markdown" id="answer">partial</div><button aria-label="停止生成"></button>${icons}</article>`,false],
+['named completion control',`<article><div class="ds-markdown" id="answer">done</div><button aria-label="复制"></button></article>`,true]
+];let passed=0;for(const [name,html,want] of checks){area.innerHTML=html;const actual=PrismDeepSeekDOM.finished(document.getElementById('answer'));out.textContent+=(actual===want?'PASS ':'FAIL ')+name+'\n';if(actual===want)passed++;}out.textContent+=`${passed}/${checks.length} passed`;area.replaceChildren();
+</script>

@@ -1,0 +1,49 @@
+/* Light mode shares the layout and motion with the original dark theme. */
+:root[data-theme="light"] { color-scheme:light;--bg:#f5f6fa;--text:#252a3a;--muted:#626b7d;--line:#29365720; }
+[data-theme="light"] body { background:#f5f6fa; color:#252a3a; }
+[data-theme="light"] #stage { background:radial-gradient(ellipse 60% 50% at 50% 48%,#edeafa 0%,#f5f6fa 65%,#f8f9fc 100%); }
+[data-theme="light"] .home-tagline strong { background:linear-gradient(110deg,#316b7a,#65518b 55%,#86596f);background-clip:text;-webkit-background-clip:text; }
+[data-theme="light"] #askForm .composer-inner { background:linear-gradient(130deg,#fff,#f1f0f8);box-shadow:inset 0 1px 2px #fff; }
+[data-theme="light"] #askForm { box-shadow:0 12px 36px #5e5b8518; }
+[data-theme="light"] #askForm textarea { color:#282d40; }
+[data-theme="light"] #askForm textarea::placeholder { color:#73798b; }
+[data-theme="light"] #askForm .composer-glow { opacity:.24; }
+[data-theme="light"] .send,[data-theme="light"] .primary { background:linear-gradient(135deg,#e9ddff,#d4c3ee);color:#302345;box-shadow:inset 0 1px 2px #fff,0 4px 12px #68568b16; }
+[data-theme="light"] #answers .answer-card {
+ background:linear-gradient(145deg,#fff,#f5f6fb 60%,#edf0f7) padding-box,
+ linear-gradient(145deg,color-mix(in srgb,var(--color) 65%,#718198),#dce1ed 55%,color-mix(in srgb,var(--color) 55%,#8b94a8)) border-box;
+ box-shadow:inset 0 1px 1px #fff,0 10px 28px #35436b12; color:#252b3c;
+}
+[data-theme="light"] #answers .answer-card::after { border-color:#798baa12;border-top-color:#fff; }
+[data-theme="light"] #answers .answer-card.is-expanded { box-shadow:0 20px 52px #35436b29,inset 0 1px 0 #fff; }
+[data-theme="light"] #answers .answer-card h2 { color:#293044; }
+[data-theme="light"] #answers .answer-card p,[data-theme="light"] #answers .inline-answer { color:#4d576d; }
+[data-theme="light"] #answers .card-status { color:#647087; }
+[data-theme="light"] #answers .answer-card.is-error { border-color:#c27f85; }
+[data-theme="light"] #answers .answer-card.is-error .card-status { color:#9f414c; }
+[data-theme="light"] .ai-logos>button { background:linear-gradient(145deg,#fff,#eaeef6);border-color:#ccd3e1;box-shadow:inset 0 1px 0 #fff,0 5px 16px #3f547713; }
+[data-theme="light"] .ai-logos>button.is-connected { border-color:#3c9b81;box-shadow:0 0 0 1px #3c9b8138,0 0 18px #47ad8d17; }
+[data-theme="light"] :is(.ai-logos button[title="ChatGPT"],.ai-logos button[title="Grok"],.model-symbol[data-model="ChatGPT"],.model-symbol[data-model="Grok"]) img { filter:brightness(.22); }
+[data-theme="light"] .model-symbol { background:#e7ebf4;border-color:#b8c3d9; }
+[data-theme="light"] .account-nav button,[data-theme="light"] .join,[data-theme="light"] .outline,[data-theme="light"] .home-api-guide { background:linear-gradient(140deg,#fff,#edf0f7);border-color:#cbd2e2;color:#424b62;box-shadow:inset 0 1px 0 #fff; }
+[data-theme="light"] :is(.quiet,.home-api-guide span,footer,footer button,.brand-caption) { color:#626b80; }
+[data-theme="light"] .home-api-guide strong { color:#654887; }
+[data-theme="light"] body .header { border-bottom-color:#2a385310; }
+[data-theme="light"] dialog { background:linear-gradient(140deg,#fff,#f2f4fa);color:#252b3c;border-color:#c9d1e2;box-shadow:0 24px 80px #25325530; }
+[data-theme="light"] dialog::backdrop { background:#35435c45; }
+[data-theme="light"] dialog :is(p,label,.web-meta,.web-guide ol,.connection-steps p,.detail-response,.tutorial-intro,.tutorial-note,.demo-note,.eyebrow) { color:#59647a!important; }
+[data-theme="light"] dialog :is(h2,h3,strong,.connection-steps strong) { color:#29344b; }
+[data-theme="light"] dialog a { color:#5c459b; }
+[data-theme="light"] dialog :is(input,select) { background:#fff;color:#29344b;border-color:#bbc5d8; }
+[data-theme="light"] dialog :is(input,textarea)::placeholder { color:#778096; }
+[data-theme="light"] :is(.connection-form,.provider-tabs button,.web-provider-options label,#historyList button) { background:#eaf0f830;color:#36425a;border-color:#c9d1df; }
+[data-theme="light"] .provider-tabs button[aria-pressed="true"] { background:#e8def7;border-color:#9b81c4; }
+[data-theme="light"] .connection-state { color:#69738a; }
+[data-theme="light"] .connection-state.connected,[data-theme="light"] #authMessage { color:#237761; }
+[data-theme="light"] .form-message { color:#9b454f; }
+[data-theme="light"] :is(.connection-steps li::before,.web-guide code) { color:#654789;background:#e5dff2; }
+[data-theme="light"] :is(.connection-item,.detail-top,.detail-bottom,#compareList article) { border-color:#3443611c; }
+[data-theme="light"] :is(.convergence,.toast) { background:#f3f2fc;color:#333c53;border-color:#c6badb; }
+[data-theme="light"] .icon-button { color:#616b81;border-color:#b9c3d6; }
+[data-theme="light"] #historyList small { color:#68748a; }
+[data-theme="light"] :focus-visible { outline-color:#7457a8; }

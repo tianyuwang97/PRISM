@@ -1,0 +1,280 @@
+html { scrollbar-gutter:stable both-edges; }
+body { background:#090a10; }
+.ambient,.screen-edge,.input-star { display:none; }
+main, .results main { max-width:none; padding:0; margin:0; }
+body:not(.results) :is(.header,footer) { display:none; }
+#stage {
+  position:relative; isolation:isolate; width:100%; height:100svh; min-height:500px;
+  background:radial-gradient(ellipse 47% 44% at 50% 47%,#161521 0%,#0d0e15 50%,#090a10 100%);
+}
+#composerZone {
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+  width:min(52%,690px); max-width:none; margin:0; z-index:2;
+}
+
+
+#askForm {
+  padding:1.5px; border-radius:32px; transform:none; animation:none;
+  background:linear-gradient(105deg,#8cc3d8,#b9a4e7 42%,#e3b4c2 81%,#ddbc97);
+}
+#askForm .composer-glow { opacity:.22; transition:opacity .3s; }
+.sending #askForm .composer-glow { opacity:.64; }
+#askForm .composer-inner { height:76px; min-height:0; border-radius:30px; padding:10px 12px 10px 24px; gap:14px; }
+#askForm textarea { font-size:16px; line-height:26px; min-height:26px; height:26px; }
+#askForm .send { height:48px; border-radius:20px; }
+#universe { position:absolute; inset:0; margin:0; max-width:none; width:100%; height:100%; perspective:none; pointer-events:none; }
+#connections { display:block; inset:0; width:100%; height:100%; }
+#connections path { fill:none; stroke-linecap:round; }
+.thread-line { stroke-width:2.6; opacity:0; transition:opacity .4s; filter:drop-shadow(0 0 3px currentColor); }
+
+/* The pulse follows the rounded path while the line reveals behind it. */
+.light-flights { position:absolute; inset:0; pointer-events:none; }
+.light-pulse {
+  display:block; position:absolute; top:5px; width:48px; height:2px; border-radius:100%;
+  background:linear-gradient(90deg,transparent,currentColor 70%,#fff);
+  box-shadow:0 0 7px currentColor; opacity:0; will-change:transform,opacity;
+}
+
+.sending #askForm .composer-glow { will-change:opacity; }
+#answers {
+  display:block; position:absolute; inset:0; overflow:visible; padding:0; perspective:none;
+  cursor:auto; width:auto; scroll-snap-type:none; pointer-events:none;
+}
+#answers .answer-card {
+  position:absolute!important; left:var(--left)!important; top:var(--top)!important; right:auto!important;
+  width:var(--w); height:var(--h); min-height:0; max-width:none; margin:0;
+  display:flex; flex-direction:column; align-items:stretch; justify-content:flex-start;
+  transform:translate(-50%,-50%); backdrop-filter:none; visibility:hidden; opacity:0; transition:opacity .7s ease-out;
+  padding:clamp(12px,1.3vw,20px); border-radius:26px;
+  border:2px solid transparent;
+  background:
+    linear-gradient(145deg,#30313e,#1b1d28 57%,#161923) padding-box,
+    linear-gradient(145deg,
+      color-mix(in srgb,var(--color) 58%,#fff) 0%,
+      color-mix(in srgb,var(--color) 26%,#424350) 30%,
+      #343642 55%,
+      color-mix(in srgb,var(--color) 50%,#444651) 100%) border-box;
+  box-shadow:inset 0 1px 1px #ffffff1f,inset 0 -2px 4px #0006,
+    0 15px 36px #0005,0 0 20px color-mix(in srgb,var(--color) 8%,transparent);
+  --w:min(25%,290px); --h:clamp(108px,20svh,162px);
+}
+#answers .answer-card::after {
+  content:""; position:absolute; inset:4px; border-radius:21px;
+  border:1px solid #ffffff06; border-top-color:#ffffff12;
+  pointer-events:none;
+}
+#answers .answer-card.appeared { visibility:visible; opacity:1; pointer-events:auto; }
+#answers .answer-card[data-slot="0"] { --left:52%; --top:19%; }
+/* Keep the constellation close to the composer, including on wide screens. */
+#answers .answer-card[data-slot="1"] { --left:calc(50% - min(29vw,360px)); --top:27%; }
+#answers .answer-card[data-slot="2"] { --left:calc(50% + min(31vw,378px)); --top:32%; }
+#answers .answer-card[data-slot="3"] { --left:calc(50% - min(20vw,246px)); --top:77%; }
+#answers .answer-card[data-slot="4"] { --left:calc(50% + min(24vw,294px)); --top:73%; }
+#answers h2 { font-size:clamp(13px,1.15vw,16px); margin:6px 0 4px; line-height:1.5; }
+#answers p { font-size:13px; line-height:1.55; }
+#answers .card-foot { display:none; }
+#answers .model-symbol {
+  width:28px; height:28px; opacity:0; transform:translateY(4px) scale(.9);
+  transition:opacity .85s ease-out .16s,transform .85s var(--ease) .16s;
+}
+#answers .appeared .model-symbol { opacity:1; transform:translateY(0) scale(1); }
+#answers .card-status { font-size:10px; }
+#stage .header { display:none; }
+.results .header { margin:0 auto; }
+@media(max-width:740px) {
+  #stage { min-height:490px; }
+  #composerZone { width:calc(100% - 38px); max-width:530px; }
+
+  #askForm .composer-inner { height:66px; padding:8px 9px 8px 18px; }
+  #askForm .send { height:44px; }
+  #answers .answer-card { --w:43%; --h:clamp(64px,12.2svh,108px); padding:8px 12px; border-radius:20px; }
+  #answers .answer-card::after { border-radius:15px; }
+  #answers .answer-card[data-slot="0"] { --left:52%; --top:10%; }
+  #answers .answer-card[data-slot="1"] { --left:24%; --top:26%; }
+  #answers .answer-card[data-slot="2"] { --left:76%; --top:30%; }
+  #answers .answer-card[data-slot="3"] { --left:24%; --top:73%; }
+  #answers .answer-card[data-slot="4"] { --left:76%; --top:80%; }
+  #answers h2 { font-size:12px; line-height:1.45; margin:4px 0 0; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; }
+  #answers .model-symbol { width:22px; height:22px; }
+  #answers p,#answers .card-status { display:none; }
+
+}
+@media(prefers-reduced-motion:reduce) {
+  #answers .answer-card,.thread-line,#answers .model-symbol,.ai-logos { transition:none!important; }
+}
+
+
+
+
+.ai-logos {
+  position:absolute; z-index:2; left:50%; bottom:calc(50% + 76px);
+  transform:translateX(-50%); display:flex; align-items:center; gap:16px;
+  opacity:1; visibility:visible; transition:opacity .3s ease-out,visibility 0s;
+}
+.results .ai-logos {
+  opacity:0; visibility:hidden; transition:opacity .3s ease-out,visibility 0s .3s;
+}
+.ai-logos > span {
+  width:54px; height:54px; display:grid; place-items:center;
+  border-radius:19px; background:linear-gradient(145deg,#24242e,#171820);
+  border:1px solid #ffffff0e; box-shadow:inset 0 1px 0 #ffffff06,0 8px 24px #0002;
+}
+.ai-logos img { width:29px; height:29px; display:block; object-fit:contain; }
+.model-symbol img { width:75%; height:75%; object-fit:contain; }
+@media(max-width:740px) {
+  .ai-logos { gap:12px; bottom:calc(50% + 66px); }
+  .ai-logos > span { width:44px; height:44px; border-radius:16px; }
+  .ai-logos img { width:25px; height:25px; }
+}
+.thread-line { stroke-dasharray:100; stroke-dashoffset:100; }
+.thread-line.connected { stroke-dashoffset:0; opacity:.72; }
+.thread-trail {
+  stroke-width:3.5; stroke-dasharray:14 100; stroke-dashoffset:14; opacity:0;
+  filter:drop-shadow(0 0 5px currentColor);
+}
+.light-pulse {
+  top:-3px; left:-3px; width:6px; height:6px; border-radius:50%;
+  background:#fff; box-shadow:0 0 5px currentColor,0 0 13px currentColor;
+}
+
+.rim-traces { position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; }
+.rim-light {
+  fill:none; stroke-width:3; stroke-linecap:round; stroke-dasharray:14 86; opacity:0;
+  filter:drop-shadow(0 0 4px currentColor);
+}
+#answers .answer-card h2,#answers .answer-card p {
+  opacity:0; transform:translateY(5px);
+  transition:opacity 1s ease-out,transform 1s var(--ease);
+}
+#answers .answer-ready h2,#answers .answer-ready p { opacity:1; transform:translateY(0); }
+#answers .answer-ready p { transition-delay:.16s; }
+@media(prefers-reduced-motion:reduce) {
+  #answers .answer-card h2,#answers .answer-card p { transition:none!important; }
+}
+
+#answers .card-header { flex-shrink:0; }
+
+/* Let the constellation grow with a wide viewport instead of capping it at laptop size. */
+@media(min-width:1100px) {
+ .results #composerZone { top:53%; width:min(46%,960px); }
+ #answers .answer-card {
+  --w:clamp(250px,23vw,520px); --h:clamp(160px,22svh,280px);
+  padding:clamp(18px,1.5vw,28px); border-radius:28px;
+ }
+ #answers .answer-card::after { border-radius:23px; }
+ #answers .answer-card[data-slot="0"] { --left:51%; --top:22%; }
+ #answers .answer-card[data-slot="1"] { --left:25%; --top:29%; }
+ #answers .answer-card[data-slot="2"] { --left:78%; --top:32%; }
+ #answers .answer-card[data-slot="3"] { --left:30%; --top:78%; }
+ #answers .answer-card[data-slot="4"] { --left:73%; --top:75%; }
+ #answers .model-symbol { width:32px; height:32px; }
+ #answers .model-name { font-size:clamp(16px,1.1vw,22px); }
+ #answers .card-status { font-size:clamp(11px,.8vw,14px); }
+ #answers h2 { font-size:clamp(15px,1.15vw,21px); margin:12px 0 7px; }
+ #answers p { font-size:clamp(14px,.95vw,18px); line-height:1.65; -webkit-line-clamp:4; }
+}
+
+/* Six providers: keep DeepSeek above the composer and give Dola a lower lane. */
+#answers .answer-card[data-slot="3"] { --left:20%; --top:76%; }
+#answers .answer-card[data-slot="4"] { --left:80%; --top:73%; }
+#answers .answer-card[data-slot="5"] { --left:50%; --top:84%; }
+@media(max-width:740px) {
+ .results #stage { min-height:760px; }
+ #answers .answer-card[data-slot="3"] { --left:24%; --top:69%; }
+ #answers .answer-card[data-slot="4"] { --left:76%; --top:73%; }
+ #answers .answer-card[data-slot="5"] { --left:50%; --top:91%; }
+ .ai-logos { gap:10px; }
+ .ai-logos button { width:44px; height:44px; border-radius:15px; }
+ .ai-logos button img { width:26px; height:26px; }
+}
+
+/* Use the supplied classic Doubao portrait; the square viewport excludes its caption. */
+.ai-logos button[title="Dola"] img,
+.model-symbol[data-model="Dola"] img {
+ object-fit:cover; object-position:50% 0%; border-radius:50%; aspect-ratio:1;
+}
+
+@media(any-hover:hover) {
+ #answers .answer-card.answer-ready:not(:disabled):hover {
+  border-color:color-mix(in srgb,var(--color) 80%,white);
+  box-shadow:inset 0 1px 1px #ffffff26,0 18px 45px #0005,0 0 28px color-mix(in srgb,var(--color) 22%,transparent);
+ }
+}
+#detailDialog[open] {
+ transform-origin:var(--answer-origin,50% 50%);
+ border-color:color-mix(in srgb,var(--answer-accent,#c5b7e8) 48%,#363442);
+ box-shadow:0 32px 100px #0009,0 0 42px color-mix(in srgb,var(--answer-accent,#c5b7e8) 12%,transparent),inset 0 1px 0 #ffffff20;
+ animation:answer-unfold .38s cubic-bezier(.2,.8,.2,1) both;
+}
+#detailDialog[open] .detail-scroll { animation:answer-content-in .4s ease-out .08s both; }
+@keyframes answer-unfold { from { opacity:0;transform:translateY(14px) scale(.94); } to { opacity:1;transform:translateY(0) scale(1); } }
+@keyframes answer-content-in { from { opacity:0;transform:translateY(8px); } to { opacity:1;transform:translateY(0); } }
+@media(prefers-reduced-motion:reduce) { #detailDialog[open],#detailDialog[open] .detail-scroll { animation:none; } }
+
+/* Continuous open/close geometry; text layers fade rather than switching display. */
+#answers .answer-card {
+ overflow:hidden;
+ transition:opacity .7s ease-out,width .52s cubic-bezier(.22,1,.36,1),height .52s cubic-bezier(.22,1,.36,1),left .52s cubic-bezier(.22,1,.36,1),top .52s cubic-bezier(.22,1,.36,1),border-radius .52s cubic-bezier(.22,1,.36,1),box-shadow .4s;
+}
+#universe:has(.is-expanded),#universe:has(.is-collapsing) { z-index:5; }
+#answers .answer-card.is-collapsing { z-index:29; }
+#answers .answer-card.is-expanded {
+ left:var(--expanded-left)!important;top:var(--expanded-top)!important;
+ width:var(--expanded-width);height:var(--expanded-height);z-index:30;border-radius:34px;
+ cursor:text;user-select:text;border-color:color-mix(in srgb,var(--color) 75%,white);
+ box-shadow:0 24px 64px #0009,0 0 32px color-mix(in srgb,var(--color) 20%,transparent),inset 0 1px 0 #ffffff26;
+}
+#answers .answer-card>h2,#answers .answer-card>p { transition:opacity .2s ease,transform .3s ease; }
+#answers .answer-card.is-expanded>h2,#answers .answer-card.is-expanded>p { opacity:0;transform:translateY(5px);pointer-events:none; }
+#answers .inline-answer {
+ display:block;position:absolute;left:24px;top:76px;
+ width:calc(var(--expanded-width,520px) - 48px);height:calc(var(--expanded-height,560px) - 100px);
+ overflow-y:auto;overscroll-behavior:contain;padding-right:8px;text-align:left;white-space:pre-wrap;overflow-wrap:anywhere;
+ font-size:16px;font-weight:400;line-height:1.8;color:#e4dfed;scrollbar-width:thin;
+ scrollbar-color:color-mix(in srgb,var(--color) 40%,#343441) transparent;
+ opacity:0;visibility:hidden;transform:translateY(8px);pointer-events:none;
+ transition:opacity .18s ease,transform .3s ease,visibility 0s .2s;
+}
+#answers .is-expanded .inline-answer { opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto;transition:opacity .32s ease .1s,transform .42s cubic-bezier(.22,1,.36,1) .08s,visibility 0s; }
+@media(max-width:740px) { #answers .is-expanded { padding:16px; } #answers .inline-answer { font-size:14px;top:56px;height:calc(var(--expanded-height,560px) - 80px); } }
+@media(prefers-reduced-motion:reduce) { #answers .answer-card,#answers .inline-answer,#answers .answer-card>h2,#answers .answer-card>p { transition:none;animation:none; } }
+
+/* Low-key resting flow follows the existing paths without relighting the cards. */
+#connections .idle-flow { fill:none;stroke-width:2;stroke-linecap:round;stroke-dasharray:8 100;opacity:0;pointer-events:none;filter:drop-shadow(0 0 2px currentColor); }
+body:has(dialog[open]) #connections .idle-flow { visibility:hidden; }
+@media(prefers-reduced-motion:reduce) { #connections .idle-flow { display:none; } }
+
+/* The composer keeps its soft color flow in every conversation state. */
+#askForm {
+ background:linear-gradient(105deg,#8cc3d8,#b9a4e7 28%,#e3b4c2 52%,#ddbc97 72%,#8cc3d8);
+ background-size:220% 100%;animation:composer-color-drift 14s ease-in-out infinite alternate;
+}
+#askForm .composer-glow,.sending #askForm .composer-glow,#askForm:focus-within .composer-glow {
+ opacity:.42;will-change:auto;
+}
+@keyframes composer-color-drift { from { background-position:0% 50%; } to { background-position:100% 50%; } }
+.reduced #askForm { animation:none; }
+@media(prefers-reduced-motion:reduce) { #askForm { animation:none; } }
+
+/* Mobile FLIP: lay out once, then animate the composited card surface. */
+@media(max-width:740px) {
+ #answers .answer-card { transition:opacity .35s ease; transform-origin:center; }
+ #answers .answer-card.is-morphing { will-change:transform; }
+ #answers .answer-card.is-expanded { box-shadow:0 12px 28px #0007,inset 0 1px 0 #ffffff20; }
+ #answers .answer-card.is-morphing .inline-answer { pointer-events:none; }
+ #answers .inline-answer { transition:opacity .16s ease,visibility 0s .16s; transform:none; -webkit-overflow-scrolling:touch; }
+ #answers .is-expanded .inline-answer { transform:none; transition:opacity .24s ease .14s,visibility 0s; }
+ #answers .answer-card>h2,#answers .answer-card>p { transition:opacity .15s ease; transform:none; }
+}
+
+/* Preserve the scale animation while avoiding a magnified small-text closing surface. */
+@media(max-width:740px) {
+ #answers .answer-card { transform:translate3d(-50%,-50%,0); backface-visibility:hidden; }
+ #answers .answer-card.is-morphing { contain:layout paint; will-change:transform; }
+ #answers .is-expanded.is-collapsing .inline-answer { opacity:0;pointer-events:none;transition:opacity .12s ease; }
+ #answers .is-morphing .inline-answer { transform:none; }
+ #answers .is-morphing .card-header { backface-visibility:hidden; }
+ body:has(.answer-card.is-morphing) #askForm { animation-play-state:paused; }
+ body:has(.answer-card.is-morphing) #connections { filter:none; }
+ body:has(.answer-card.is-morphing) .thread-line { filter:none; }
+}

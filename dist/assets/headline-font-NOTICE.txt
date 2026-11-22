@@ -1,0 +1,6 @@
+Prism Headline Round is a renamed, character-subset webfont derived from
+ChillRoundF v3.0 by ChillType. No glyph outlines were changed.
+Source: https://github.com/Warren2060/ChillRound/blob/main/ChillRoundF%20v3.0.ttf
+License: SIL Open Font License 1.1; see chillround-OFL.txt.
+This derivative remains under that license and does not use the reserved font names.
+The subset contains only the PRISM homepage headline characters.

@@ -1,0 +1,32 @@
+<!doctype html><meta charset="utf-8"><title>ChatGPT adapter tests</title><h1>ChatGPT adapter checks</h1><pre id="output">Running…</pre><div id="fixture"></div>
+<script>
+let listener,clicks=0,index=0,progress=false,completedAt=0;
+const out=document.getElementById('output'),fixture=document.getElementById('fixture');
+const names=['','textarea','contenteditable','new-layout editor','modern answer + remounted history','second modern request'];
+window.chrome={runtime:{id:'test',onMessage:{addListener(fn){listener=fn;}},sendMessage(m){
+ if(m.type==='progress')progress=true;
+ if(m.type==='result'){
+  if(m.text!=='Fresh test answer '+index||!progress||(index>=4&&!completedAt)){out.textContent='FAIL wrong answer or premature completion';return Promise.resolve();}
+  listener({type:'probe',id:'request-'+index},{id:'test'},p=>{if(p.activeId!==null||p.result?.text!==m.text)out.textContent='FAIL result recovery';});
+  out.textContent+='\nPASS '+names[index]+' submit, progress, completion and recovery';
+  if(index<5)setTimeout(()=>run(index+1),0);else out.textContent+='\n'+(clicks===5?'5/5 passed; one send per request':'FAIL duplicate sends');
+ }
+ return Promise.resolve();
+}}};
+function run(n){
+ index=n;progress=false;completedAt=0;
+ fixture.innerHTML=(n<4?'<article><div data-message-author-role="assistant"><div class="markdown">Old answer must never be returned</div></div><button aria-label="Copy"></button></article>':'<div data-talvt-turn-state="complete" id="old"><div data-chatgpt-search-unit-key="old:1:assistant"><div data-markdown-text-style="assistant-message">Old answer must never be returned</div></div></div>')+(n===1?'<textarea id="mobile-composer-prompt" placeholder="Ask ChatGPT"></textarea>':n===2?'<div id="prompt-textarea" contenteditable="true"></div>':'<div role="textbox" contenteditable="true" aria-label="询问"></div>')+'<button aria-label="发送消息" id="send">Send</button>';
+ document.getElementById('send').onclick=()=>{
+  clicks++;const article=document.createElement('article');
+  if(n<4)article.innerHTML='<div data-message-author-role="assistant"><div class="markdown">Fresh test answer '+n+'</div></div><button data-testid="copy-turn-action-button" aria-label="Copy"></button>';
+  else{
+   article.dataset.talvtTurnState='streaming';article.innerHTML='<div data-chatgpt-search-unit-key="new-'+n+':1:assistant"><h4 data-conversation-role="assistant">ChatGPT 说：</h4><div data-markdown-text-style="assistant-message">Fresh test answer '+n+'</div></div>';
+   // Stable text is not completion. The explicit turn state becomes complete later.
+   setTimeout(()=>{completedAt=Date.now();article.dataset.talvtTurnState='complete';},2600);
+   const old=document.getElementById('old');old.outerHTML=old.outerHTML;
+  }
+  fixture.append(article);
+ };
+ listener({type:'ask',id:'request-'+n,question:'hello test '+n},{id:'test'},r=>{if(!r.ok)out.textContent='FAIL '+r.error;});
+}
+</script><script src="/chatgpt.js"></script><script>run(1);</script>
